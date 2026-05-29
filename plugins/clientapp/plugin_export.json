@@ -1,0 +1,39 @@
+{
+    "name": "clientapp",
+    "version": "1.0.0",
+    "description": "客户端应用插件（多租户、多平台小程序、EVM身份）",
+    "author": "ginfast",
+    "email": "ginfast@example.com",
+    "url": "https://example.com",
+    "dependencies": {
+        "ginfast": ">=1.0.0"
+    },
+    "exportDirs": [
+        "plugins/clientapp/",
+        "plugins/clientappinit.go"
+    ],
+    "exportDirsFrontend": [
+        "src/plugins/clientapp/"
+    ],
+    "menus": [
+        {
+            "path": "/clientapp/clients",
+            "type": 1
+        },
+        {
+            "path": "/clientapp/users",
+            "type": 1
+        },
+        {
+            "path": "/clientapp/login-log",
+            "type": 1
+        }
+    ],
+  "databaseTable": [
+    "plugin_clientapp_client",
+    "plugin_clientapp_platform",
+    "plugin_clientapp_user",
+    "plugin_clientapp_user_identity",
+    "plugin_clientapp_login_log"
+  ]
+}
