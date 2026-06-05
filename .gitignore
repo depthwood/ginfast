@@ -94,6 +94,8 @@ __debug_bin.exe*
 /plugins/*
 !/plugins/example/
 !/plugins/exampleinit.go
+!/plugins/clientapp/
+!/plugins/clientappinit.go
 /plans
 /AGENTS.md
 # scripts 目录配置 - 只提交构建和文档生成脚本
