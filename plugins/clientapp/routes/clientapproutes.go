@@ -14,8 +14,21 @@ func init() {
 	platformController := controllers.NewPlatformController()
 	userController := controllers.NewUserController()
 	loginLogController := controllers.NewLoginLogController()
+	authController := controllers.NewAuthController()
+	appConfigController := controllers.NewAppConfigController()
 
 	ginhelper.RegisterPluginRoutes(func(engine *gin.Engine) {
+		public := engine.Group("/api/plugins/clientapp")
+		{
+			auth := public.Group("/auth")
+			{
+				auth.POST("/mp/login", authController.MiniProgramLogin)
+				auth.GET("/wallet/nonce", authController.WalletNonce)
+				auth.POST("/wallet/login", authController.WalletLogin)
+			}
+			public.GET("/app/config", authController.AppConfig)
+		}
+
 		admin := engine.Group("/api/plugins/clientapp/admin")
 		admin.Use(middleware.JWTAuthMiddleware())
 		admin.Use(middleware.CasbinMiddleware())
@@ -58,6 +71,17 @@ func init() {
 			signLog := admin.Group("/signlog")
 			{
 				signLog.GET("/list", loginLogController.List)
+			}
+
+			appConfig := admin.Group("/appconfig")
+			{
+				appConfig.GET("/list", appConfigController.List)
+				appConfig.GET("/:id", appConfigController.GetByID)
+				appConfig.POST("/save", appConfigController.Save)
+				appConfig.POST("/publish", appConfigController.Publish)
+				appConfig.POST("/decoration/preview", appConfigController.DecorationPreview)
+				appConfig.PUT("/status", appConfigController.UpdateStatus)
+				appConfig.DELETE("/delete", appConfigController.Delete)
 			}
 		}
 

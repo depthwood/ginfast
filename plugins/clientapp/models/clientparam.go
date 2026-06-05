@@ -388,3 +388,91 @@ func (r *LoginLogListRequest) Handle() func(db *gorm.DB) *gorm.DB {
 		return db
 	}
 }
+
+// AppConfigListRequest App界面配置列表
+type AppConfigListRequest struct {
+	models.BasePaging
+	models.Validator
+	ClientID *uint   `form:"clientId" json:"clientId"`
+	Name     *string `form:"name" json:"name"`
+	Status   *int8   `form:"status" json:"status"`
+}
+
+func (r *AppConfigListRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+func (r *AppConfigListRequest) Handle() func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		if r.ClientID != nil && *r.ClientID > 0 {
+			db = db.Where("client_id = ?", *r.ClientID)
+		}
+		if r.Name != nil && *r.Name != "" {
+			db = db.Where("name LIKE ?", "%"+*r.Name+"%")
+		}
+		if r.Status != nil {
+			db = db.Where("status = ?", *r.Status)
+		}
+		return db
+	}
+}
+
+type AppConfigSaveRequest struct {
+	models.Validator
+	ID           uint   `json:"id"`
+	ClientID     uint   `json:"clientId" validate:"required" message:"客户端ID不能为空"`
+	Name         string `json:"name" validate:"required" message:"配置名称不能为空"`
+	Status       int8   `json:"status"`
+	Theme        string `json:"theme"`
+	Pages        string `json:"pages"`
+	FeatureFlags string `json:"featureFlags"`
+	Navigation   string `json:"navigation"`
+	Extra        string `json:"extra"`
+	Remark       string `json:"remark"`
+}
+
+func (r *AppConfigSaveRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+type AppDecorationPreviewRequest struct {
+	models.Validator
+	Prompt       string `json:"prompt" validate:"required" message:"装修需求不能为空"`
+	Theme        string `json:"theme"`
+	Pages        string `json:"pages"`
+	FeatureFlags string `json:"featureFlags"`
+	Navigation   string `json:"navigation"`
+	Extra        string `json:"extra"`
+}
+
+func (r *AppDecorationPreviewRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+type AppConfigStatusRequest struct {
+	models.Validator
+	ID     uint `json:"id" validate:"required" message:"ID不能为空"`
+	Status int8 `json:"status" validate:"required" message:"状态不能为空"`
+}
+
+func (r *AppConfigStatusRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+type AppConfigDeleteRequest struct {
+	models.Validator
+	ID uint `json:"id" validate:"required" message:"ID不能为空"`
+}
+
+func (r *AppConfigDeleteRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+type AppConfigGetByIDRequest struct {
+	models.Validator
+	ID uint `uri:"id" validate:"required" message:"ID不能为空"`
+}
+
+func (r *AppConfigGetByIDRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}

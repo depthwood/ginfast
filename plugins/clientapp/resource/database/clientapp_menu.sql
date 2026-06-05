@@ -12,14 +12,14 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- 清理旧数据（可重复执行）
 -- ----------------------------
-DELETE FROM `sys_menu_api` WHERE `menu_id` BETWEEN 140350 AND 140362;
-DELETE FROM `sys_role_menu` WHERE `menu_id` BETWEEN 140350 AND 140362;
+DELETE FROM `sys_menu_api` WHERE `menu_id` BETWEEN 140350 AND 140368;
+DELETE FROM `sys_role_menu` WHERE `menu_id` BETWEEN 140350 AND 140368;
 DELETE FROM `sys_casbin_rule` WHERE `v1` LIKE '/api/plugins/clientapp/%';
-DELETE FROM `sys_menu` WHERE `id` BETWEEN 140350 AND 140362;
-DELETE FROM `sys_api` WHERE `id` BETWEEN 217 AND 240;
+DELETE FROM `sys_menu` WHERE `id` BETWEEN 140350 AND 140367;
+DELETE FROM `sys_api` WHERE `id` BETWEEN 217 AND 247;
 
 -- ----------------------------
--- sys_api（ID: 217-240）
+-- sys_api（ID: 217-247）
 -- ----------------------------
 INSERT INTO `sys_api` (`id`, `title`, `path`, `method`, `api_group`, `created_at`, `updated_at`, `deleted_at`, `created_by`) VALUES
 (217, '客户端列表', '/api/plugins/clientapp/admin/client/list', 'GET', '客户端应用', NOW(), NOW(), NULL, 1),
@@ -48,10 +48,17 @@ INSERT INTO `sys_api` (`id`, `title`, `path`, `method`, `api_group`, `created_at
 (238, '绑定用户身份', '/api/plugins/clientapp/admin/user/identity/bind', 'POST', '客户端应用', NOW(), NOW(), NULL, 1),
 (239, '解绑用户身份', '/api/plugins/clientapp/admin/user/identity/unbind', 'DELETE', '客户端应用', NOW(), NOW(), NULL, 1),
 
-(240, '登录日志列表', '/api/plugins/clientapp/admin/signlog/list', 'GET', '客户端应用', NOW(), NOW(), NULL, 1);
+(240, '登录日志列表', '/api/plugins/clientapp/admin/signlog/list', 'GET', '客户端应用', NOW(), NOW(), NULL, 1),
+(241, 'App配置列表', '/api/plugins/clientapp/admin/appconfig/list', 'GET', '客户端应用', NOW(), NOW(), NULL, 1),
+(242, 'App配置详情', '/api/plugins/clientapp/admin/appconfig/:id', 'GET', '客户端应用', NOW(), NOW(), NULL, 1),
+(243, '保存App配置', '/api/plugins/clientapp/admin/appconfig/save', 'POST', '客户端应用', NOW(), NOW(), NULL, 1),
+(244, '更新App配置状态', '/api/plugins/clientapp/admin/appconfig/status', 'PUT', '客户端应用', NOW(), NOW(), NULL, 1),
+(245, '删除App配置', '/api/plugins/clientapp/admin/appconfig/delete', 'DELETE', '客户端应用', NOW(), NOW(), NULL, 1),
+(246, 'AI生成App装修预览', '/api/plugins/clientapp/admin/appconfig/decoration/preview', 'POST', '客户端应用', NOW(), NOW(), NULL, 1),
+(247, '发布App配置', '/api/plugins/clientapp/admin/appconfig/publish', 'POST', '客户端应用', NOW(), NOW(), NULL, 1);
 
 -- ----------------------------
--- sys_menu（ID: 140350-140362）
+-- sys_menu（ID: 140350-140368）
 -- type: 1=目录 2=菜单 3=按钮
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES
@@ -59,6 +66,7 @@ INSERT INTO `sys_menu` VALUES
 ('140351', '140350', '/clientapp/clients', 'ClientappClients', '', 'plugins/clientapp/views/client-list', 'clientapp-client', '0', '0', '0', '1', '0', '', '0', '', 'IconMobile', '1', '2', '0', '', NOW(), NOW(), NULL, '1'),
 ('140352', '140350', '/clientapp/users', 'ClientappUsers', '', 'plugins/clientapp/views/user-list', 'clientapp-user', '0', '0', '0', '1', '0', '', '0', '', 'IconUser', '2', '2', '0', '', NOW(), NOW(), NULL, '1'),
 ('140353', '140350', '/clientapp/login-log', 'ClientappLoginLog', '', 'plugins/clientapp/views/login-log', 'clientapp-log', '0', '0', '0', '1', '0', '', '0', '', 'IconHistory', '3', '2', '0', '', NOW(), NOW(), NULL, '1'),
+('140363', '140350', '/clientapp/app-config', 'ClientappAppConfig', '', 'plugins/clientapp/views/app-config', 'clientapp-config', '0', '0', '0', '1', '0', '', '0', '', 'IconSettings', '4', '2', '0', '', NOW(), NOW(), NULL, '1'),
 
 ('140354', '140351', '', '', '', '', '新增客户端', '0', '0', '0', '1', '0', '', '0', '', '', '1', '3', '0', 'plugins:clientapp:client:add', NOW(), NOW(), NULL, '1'),
 ('140355', '140351', '', '', '', '', '编辑客户端', '0', '0', '0', '1', '0', '', '0', '', '', '2', '3', '0', 'plugins:clientapp:client:edit', NOW(), NOW(), NULL, '1'),
@@ -69,7 +77,12 @@ INSERT INTO `sys_menu` VALUES
 
 ('140360', '140352', '', '', '', '', '代注册用户', '0', '0', '0', '1', '0', '', '0', '', '', '1', '3', '0', 'plugins:clientapp:user:add', NOW(), NOW(), NULL, '1'),
 ('140361', '140352', '', '', '', '', '编辑用户', '0', '0', '0', '1', '0', '', '0', '', '', '2', '3', '0', 'plugins:clientapp:user:edit', NOW(), NOW(), NULL, '1'),
-('140362', '140352', '', '', '', '', '删除用户', '0', '0', '0', '1', '0', '', '0', '', '', '3', '3', '0', 'plugins:clientapp:user:delete', NOW(), NOW(), NULL, '1');
+('140362', '140352', '', '', '', '', '删除用户', '0', '0', '0', '1', '0', '', '0', '', '', '3', '3', '0', 'plugins:clientapp:user:delete', NOW(), NOW(), NULL, '1'),
+('140364', '140363', '', '', '', '', '保存App配置', '0', '0', '0', '1', '0', '', '0', '', '', '1', '3', '0', 'plugins:clientapp:appconfig:save', NOW(), NOW(), NULL, '1'),
+('140368', '140363', '', '', '', '', '发布App配置', '0', '0', '0', '1', '0', '', '0', '', '', '2', '3', '0', 'plugins:clientapp:appconfig:publish', NOW(), NOW(), NULL, '1'),
+('140365', '140363', '', '', '', '', '启停App配置', '0', '0', '0', '1', '0', '', '0', '', '', '3', '3', '0', 'plugins:clientapp:appconfig:status', NOW(), NOW(), NULL, '1'),
+('140366', '140363', '', '', '', '', '删除App配置', '0', '0', '0', '1', '0', '', '0', '', '', '4', '3', '0', 'plugins:clientapp:appconfig:delete', NOW(), NOW(), NULL, '1'),
+('140367', '140363', '', '', '', '', 'AI装修预览', '0', '0', '0', '1', '0', '', '0', '', '', '5', '3', '0', 'plugins:clientapp:appconfig:preview', NOW(), NOW(), NULL, '1');
 
 -- ----------------------------
 -- sys_menu_api（菜单与 API 关联）
@@ -83,6 +96,8 @@ INSERT INTO `sys_menu_api` (`menu_id`, `api_id`) VALUES
 ('140352', 232), ('140352', 233),
 -- 登录日志页
 ('140353', 218), ('140353', 240),
+-- App配置页
+('140363', 218), ('140363', 241), ('140363', 242),
 
 -- 客户端按钮
 ('140354', 220),
@@ -95,11 +110,17 @@ INSERT INTO `sys_menu_api` (`menu_id`, `api_id`) VALUES
 -- 用户按钮
 ('140360', 234), ('140360', 238),
 ('140361', 235), ('140361', 236), ('140361', 238), ('140361', 239),
-('140362', 237);
+('140362', 237),
+-- App配置按钮
+('140364', 243),
+('140368', 247),
+('140365', 244),
+('140366', 245),
+('140367', 246);
 
 -- ----------------------------
 -- sys_casbin_rule（role_1 超级管理员 / role_2 租户管理员）
--- ID: 7600-7647
+-- ID: 7600-7661
 -- ----------------------------
 INSERT INTO `sys_casbin_rule` (`id`, `ptype`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`) VALUES
 -- role_1
@@ -127,9 +148,16 @@ INSERT INTO `sys_casbin_rule` (`id`, `ptype`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`
 (7621, 'p', 'role_1', '/api/plugins/clientapp/admin/user/identity/bind', 'POST', '*', '', ''),
 (7622, 'p', 'role_1', '/api/plugins/clientapp/admin/user/identity/unbind', 'DELETE', '*', '', ''),
 (7623, 'p', 'role_1', '/api/plugins/clientapp/admin/signlog/list', 'GET', '*', '', ''),
+(7624, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/list', 'GET', '*', '', ''),
+(7625, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/:id', 'GET', '*', '', ''),
+(7626, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/save', 'POST', '*', '', ''),
+(7627, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/publish', 'POST', '*', '', ''),
+(7628, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/status', 'PUT', '*', '', ''),
+(7629, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/delete', 'DELETE', '*', '', ''),
+(7630, 'p', 'role_1', '/api/plugins/clientapp/admin/appconfig/decoration/preview', 'POST', '*', '', ''),
 
 -- role_2
-(7630, 'p', 'role_2', '/api/plugins/clientapp/admin/client/list', 'GET', '*', '', ''),
+(7661, 'p', 'role_2', '/api/plugins/clientapp/admin/client/list', 'GET', '*', '', ''),
 (7631, 'p', 'role_2', '/api/plugins/clientapp/admin/client/options', 'GET', '*', '', ''),
 (7632, 'p', 'role_2', '/api/plugins/clientapp/admin/client/:id', 'GET', '*', '', ''),
 (7633, 'p', 'role_2', '/api/plugins/clientapp/admin/client/add', 'POST', '*', '', ''),
@@ -152,18 +180,25 @@ INSERT INTO `sys_casbin_rule` (`id`, `ptype`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`
 (7650, 'p', 'role_2', '/api/plugins/clientapp/admin/user/delete', 'DELETE', '*', '', ''),
 (7651, 'p', 'role_2', '/api/plugins/clientapp/admin/user/identity/bind', 'POST', '*', '', ''),
 (7652, 'p', 'role_2', '/api/plugins/clientapp/admin/user/identity/unbind', 'DELETE', '*', '', ''),
-(7653, 'p', 'role_2', '/api/plugins/clientapp/admin/signlog/list', 'GET', '*', '', '');
+(7653, 'p', 'role_2', '/api/plugins/clientapp/admin/signlog/list', 'GET', '*', '', ''),
+(7654, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/list', 'GET', '*', '', ''),
+(7655, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/:id', 'GET', '*', '', ''),
+(7656, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/save', 'POST', '*', '', ''),
+(7657, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/publish', 'POST', '*', '', ''),
+(7658, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/status', 'PUT', '*', '', ''),
+(7659, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/delete', 'DELETE', '*', '', ''),
+(7660, 'p', 'role_2', '/api/plugins/clientapp/admin/appconfig/decoration/preview', 'POST', '*', '', '');
 
 -- ----------------------------
 -- sys_role_menu（为 role_1 / role_2 分配菜单）
 -- ----------------------------
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES
-('1', '140350'), ('1', '140351'), ('1', '140352'), ('1', '140353'),
+('1', '140350'), ('1', '140351'), ('1', '140352'), ('1', '140353'), ('1', '140363'),
 ('1', '140354'), ('1', '140355'), ('1', '140356'), ('1', '140357'), ('1', '140358'), ('1', '140359'),
-('1', '140360'), ('1', '140361'), ('1', '140362'),
+('1', '140360'), ('1', '140361'), ('1', '140362'), ('1', '140364'), ('1', '140368'), ('1', '140365'), ('1', '140366'), ('1', '140367'),
 
-('2', '140350'), ('2', '140351'), ('2', '140352'), ('2', '140353'),
+('2', '140350'), ('2', '140351'), ('2', '140352'), ('2', '140353'), ('2', '140363'),
 ('2', '140354'), ('2', '140355'), ('2', '140356'), ('2', '140357'), ('2', '140358'), ('2', '140359'),
-('2', '140360'), ('2', '140361'), ('2', '140362');
+('2', '140360'), ('2', '140361'), ('2', '140362'), ('2', '140364'), ('2', '140368'), ('2', '140365'), ('2', '140366'), ('2', '140367');
 
 SET FOREIGN_KEY_CHECKS=1;

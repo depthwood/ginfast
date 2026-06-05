@@ -43,6 +43,10 @@ func NewLoginLogList() *LoginLogList {
 	return &LoginLogList{}
 }
 
+func (m *LoginLog) Create(c context.Context) error {
+	return app.DB().WithContext(c).Create(m).Error
+}
+
 func (l *LoginLogList) Find(c context.Context, scopes ...func(*gorm.DB) *gorm.DB) error {
 	return app.DB().WithContext(c).Model(&LoginLog{}).Scopes(scopes...).Order("id desc").Find(l).Error
 }
