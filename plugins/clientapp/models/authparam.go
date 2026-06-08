@@ -61,6 +61,7 @@ func (r *WalletLoginRequest) Validate(c *gin.Context) error {
 type AppConfigGetRequest struct {
 	models.Validator
 	AuthBaseRequest
+	PageCode string `json:"pageCode" form:"pageCode"`
 }
 
 func (r *AppConfigGetRequest) Validate(c *gin.Context) error {

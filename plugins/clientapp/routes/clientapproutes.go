@@ -16,6 +16,7 @@ func init() {
 	loginLogController := controllers.NewLoginLogController()
 	authController := controllers.NewAuthController()
 	appConfigController := controllers.NewAppConfigController()
+	deviceController := controllers.NewDeviceController()
 
 	ginhelper.RegisterPluginRoutes(func(engine *gin.Engine) {
 		public := engine.Group("/api/plugins/clientapp")
@@ -27,6 +28,10 @@ func init() {
 				auth.POST("/wallet/login", authController.WalletLogin)
 			}
 			public.GET("/app/config", authController.AppConfig)
+
+			// 设备自动发现（公开接口，供APP端调用）
+			public.POST("/device/discover", deviceController.Discover)
+			public.POST("/device/heartbeat", deviceController.Heartbeat)
 		}
 
 		admin := engine.Group("/api/plugins/clientapp/admin")
@@ -82,6 +87,28 @@ func init() {
 				appConfig.POST("/decoration/preview", appConfigController.DecorationPreview)
 				appConfig.PUT("/status", appConfigController.UpdateStatus)
 				appConfig.DELETE("/delete", appConfigController.Delete)
+
+				// 多页面装修
+				appConfig.GET("/page", appConfigController.GetPageConfig)
+				appConfig.POST("/page/save", appConfigController.SavePageConfig)
+
+				// 方案切换
+				appConfig.POST("/activate", appConfigController.ActivateScheme)
+
+				// 快照/版本管理
+				appConfig.POST("/snapshot/create", appConfigController.CreateSnapshot)
+				appConfig.GET("/snapshot/list", appConfigController.ListSnapshots)
+				appConfig.POST("/snapshot/restore", appConfigController.RestoreFromSnapshot)
+				appConfig.DELETE("/snapshot/delete", appConfigController.DeleteSnapshot)
+			}
+
+			device := admin.Group("/device")
+			{
+				device.GET("/list", deviceController.List)
+				device.PUT("/status", deviceController.UpdateStatus)
+				device.PUT("/bind", deviceController.BindClient)
+				device.DELETE("/delete", deviceController.Delete)
+				device.POST("/simulate", deviceController.SimulateDiscover)
 			}
 		}
 

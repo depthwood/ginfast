@@ -421,6 +421,7 @@ type AppConfigSaveRequest struct {
 	models.Validator
 	ID           uint   `json:"id"`
 	ClientID     uint   `json:"clientId" validate:"required" message:"客户端ID不能为空"`
+	ConfigKey    string `json:"configKey"`
 	Name         string `json:"name" validate:"required" message:"配置名称不能为空"`
 	Status       int8   `json:"status"`
 	Theme        string `json:"theme"`
@@ -435,9 +436,88 @@ func (r *AppConfigSaveRequest) Validate(c *gin.Context) error {
 	return r.Validator.Check(c, r)
 }
 
+// AppConfigPageSaveRequest 保存单页面装修数据
+type AppConfigPageSaveRequest struct {
+	models.Validator
+	ID       uint   `json:"id" validate:"required" message:"配置ID不能为空"`
+	PageCode string `json:"pageCode" validate:"required" message:"页面标识不能为空"`
+	PageData string `json:"pageData"`
+	AutoSave bool   `json:"autoSave"`
+}
+
+func (r *AppConfigPageSaveRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigPageGetRequest 获取单页面装修数据
+type AppConfigPageGetRequest struct {
+	models.Validator
+	ID       uint   `form:"id" json:"id" validate:"required" message:"配置ID不能为空"`
+	PageCode string `form:"pageCode" json:"pageCode" validate:"required" message:"页面标识不能为空"`
+}
+
+func (r *AppConfigPageGetRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigActivateRequest 激活配置方案
+type AppConfigActivateRequest struct {
+	models.Validator
+	ID uint `json:"id" validate:"required" message:"配置ID不能为空"`
+}
+
+func (r *AppConfigActivateRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigSnapshotCreateRequest 创建配置快照
+type AppConfigSnapshotCreateRequest struct {
+	models.Validator
+	ConfigID uint   `json:"configId" validate:"required" message:"配置ID不能为空"`
+	Name     string `json:"name" validate:"required" message:"快照名称不能为空"`
+	Remark   string `json:"remark"`
+}
+
+func (r *AppConfigSnapshotCreateRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigSnapshotRestoreRequest 从快照恢复配置
+type AppConfigSnapshotRestoreRequest struct {
+	models.Validator
+	SnapshotID uint `json:"snapshotId" validate:"required" message:"快照ID不能为空"`
+}
+
+func (r *AppConfigSnapshotRestoreRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigSnapshotListRequest 快照列表请求
+type AppConfigSnapshotListRequest struct {
+	models.BasePaging
+	models.Validator
+	ConfigID uint `form:"configId" json:"configId"`
+	ClientID uint `form:"clientId" json:"clientId"`
+}
+
+func (r *AppConfigSnapshotListRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
+// AppConfigSnapshotDeleteRequest 删除快照
+type AppConfigSnapshotDeleteRequest struct {
+	models.Validator
+	ID uint `json:"id" validate:"required" message:"快照ID不能为空"`
+}
+
+func (r *AppConfigSnapshotDeleteRequest) Validate(c *gin.Context) error {
+	return r.Validator.Check(c, r)
+}
+
 type AppDecorationPreviewRequest struct {
 	models.Validator
 	Prompt       string `json:"prompt" validate:"required" message:"装修需求不能为空"`
+	PageCode     string `json:"pageCode"`
 	Theme        string `json:"theme"`
 	Pages        string `json:"pages"`
 	FeatureFlags string `json:"featureFlags"`

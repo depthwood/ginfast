@@ -24,3 +24,8 @@ func TenantScope(c *gin.Context) func(db *gorm.DB) *gorm.DB {
 		return db.Where("tenant_id = ?", tenantID)
 	}
 }
+
+// GetTenantID 获取当前租户ID
+func GetTenantID(c *gin.Context) uint {
+	return common.GetCurrentTenantID(c)
+}
